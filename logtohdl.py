@@ -202,7 +202,7 @@ def createConnections(fromNode, currentDepth, isInput):
                             nodeInputPositions.append([inputX, node.y])
                             nodeInputPositions.append([inputX, node.y + (node.y - topInputPos)])
 
-                    nodeInputPositions.sort(key=getSecondVal) # sort by y value. this assumes all gates have their inputs lined up on the y-axis.
+                    nodeInputPositions.sort(key=getSecondVal) # sort by y value so inputs are in the correct order. this assumes all gates have their inputs lined up on the y-axis.
 
                     inputIndex = 0
                     hasConnection = False
@@ -272,6 +272,7 @@ def buildHdl(outputNode): # furthest node in the calculation chain
                 node = findNode(_output.fromId, nodes)
                 outputNode.parsed = True
                 buildHdl(node)
+                break
             elif _output.fromId == outputNode.outputId:
                 node = findNode(_output.toId, outputNodes)
                 if not (node.label == ""):
@@ -279,7 +280,7 @@ def buildHdl(outputNode): # furthest node in the calculation chain
                 else:
                     output += "out=out[" + str(_output.toId) + "]"
                 foundOutput = True
-            break
+                break
         if chipData != None:
             if not foundOutput:
                 output += "out=output" + str(outputNode.outputId)
@@ -292,6 +293,10 @@ for node in inputNodes:
 
 for node in outputNodes:
     buildHdl(node)
+    print(node)
+
+for connection in outputConnections:
+    print(connection)
 
 print("HDL Output:\n")
 print(finalOutput)
