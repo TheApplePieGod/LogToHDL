@@ -7,6 +7,9 @@ __pycache__/
 *.so
 
 *.pyproj
+*.pyproj.user
+*.sln
+.vs/*
 
 # Distribution / packaging
 .Python
