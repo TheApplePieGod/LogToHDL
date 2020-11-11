@@ -64,7 +64,6 @@ chips.append(Chip("Xnor", 70, 40, 8))
 #-----------------------
 
 Tk().withdraw()
-#filename = "C:\\Users\\Evan\\Desktop\\Micro\\logism\\AndTest.circ"
 filename = askopenfilename()
 xmlTree = ET.parse(filename)
 xmlRoot = xmlTree.getroot()
@@ -87,7 +86,6 @@ def parseLabel(gateNode):
         return ""
     else:
         return labelNode.attrib["val"]
-
 
 # parse wire data
 currentWireId = 0
@@ -172,7 +170,7 @@ def createConnections(fromNode, currentDepth, isInput):
                 for chip in chips:
                     if chip.id == node.chipId:
                         inputChip = chip
-                if not (inputChip == None):
+                if inputChip != None:
                     inputX = node.x - inputChip.width # assumes all gates have their inputs lined up on the y-axis
                     topInputPos = 0 # we can find this because we know all inputs are separated by a y value of 10
                     evenInputs = node.numInputs % 2 == 0
@@ -236,11 +234,10 @@ def findNode(nodeId, nodeArray):
             return node
     return None
 
-
 finalOutput = ""
 def buildHdl(outputNode): # furthest node in the calculation chain
     global finalOutput
-    if not (outputNode == None) and not outputNode.parsed:
+    if outputNode != None and not outputNode.parsed:
         output = ""
         chipData = None
 
@@ -249,7 +246,7 @@ def buildHdl(outputNode): # furthest node in the calculation chain
                 if chip.id == outputNode.chipId:
                     chipData = chip
 
-        if not (chipData == None):
+        if chipData != None:
             output = chipData.hdlName + "("
 
         for connection in connections:
@@ -260,17 +257,17 @@ def buildHdl(outputNode): # furthest node in the calculation chain
                     output += chr(ord('a') + connection.inputId) + "=output" + str(connection.fromId) + ","
 
         if chipData != None:
-            for _input in inputConnections: # check for input connections (not great)
+            for _input in inputConnections: # check for input connections
                 if _input.toId == outputNode.outputId:
                     node = findNode(_input.fromId, inputNodes)
                     output += chr(ord('a') + _input.inputId)
-                    if not (node == None) and not (node.label == ""):
+                    if node != None and not (node.label == ""):
                         output += "=" + node.label + ","
                     else:
                         output += "=in[" + str(_input.toId) + "],"
 
         foundOutput = False
-        for _output in outputConnections: # check for output connections
+        for _output in outputConnections: # check for output connections (back/forth)
             if _output.toId == outputNode.outputId:
                 node = findNode(_output.fromId, nodes)
                 outputNode.parsed = True
