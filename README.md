@@ -1,5 +1,4 @@
 ## LogToHDL
------------
 
 A python script that will take a logisim .circ file and convert it into nand2tetris hdl code to be placed in the parts section.
 
