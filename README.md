@@ -10,11 +10,12 @@ Current limitations:
 
 Supported nodes: input, output, and, or, not, nand, xor, nor, xnor
 
-Example:\
+**Example:**\
 ![Example Image](https://github.com/TheApplePieGod/LogToHDL/blob/master/images/example.png?raw=true)
 
 Produces:
-```HDL Output:
+```
+HDL Output:
 
 And(c=B,a=D,b=C,out=output3);
 Nand(b=B,a=D,c=A,out=output5);
