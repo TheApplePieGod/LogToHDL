@@ -10,7 +10,7 @@ Current limitations:
 
 Supported nodes: input, output, and, or, not, nand, xor, nor, xnor
 
-Example:
+Example:\
 ![Example Image](https://github.com/TheApplePieGod/LogToHDL/blob/master/images/example.png?raw=true)
 
 Produces:
