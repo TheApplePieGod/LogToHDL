@@ -5,7 +5,7 @@ A python script that will take a logisim .circ file and convert it into nand2tet
 Current limitations:
 - All gates must be facing east (inputs and outputs can be any direction)
 - Multiple output nodes are supported, but a gate that is connected to an output pin must only be connected to that output pin
-- All input and output nodes must be labeled or you will get randomized i/o array accessors
+- All input and output nodes must be labeled or you will most likely end up with nonsense as the variables
 - Greater than two inputs per node are supported, but as far as I know, n2t hdl doesn't support, for example, `And(a=a,b=b,c=c,out=out)` with more than 2 inputs
 
 Supported nodes: input, output, and, or, not, nand, xor, nor, xnor
