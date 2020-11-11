@@ -4,11 +4,12 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
 class Chip:
-    def __init__(self, hdlName, width, height, id):
+    def __init__(self, hdlName, width, height, id, inputNames):
         self.hdlName = hdlName
         self.width = width
         self.height = height
         self.id = id
+        self.inputNames = inputNames
     def __str__(self):
         return "Chip: [name: %s, id: %d]" % (self.hdlName, self.id)
 
@@ -52,15 +53,15 @@ outputConnections = []
 inputConnections = []
 
 # Chip Dictionary
-chips.append(Chip("Input", 0, 0, 0))
-chips.append(Chip("Output", 0, 0, 1))
-chips.append(Chip("And", 50, 40, 2))
-chips.append(Chip("Or", 50, 40, 3))
-chips.append(Chip("Not", 30, 10, 4))
-chips.append(Chip("Nand", 60, 40, 5))
-chips.append(Chip("Xor", 60, 40, 6))
-chips.append(Chip("Nor", 60, 40, 7))
-chips.append(Chip("Xnor", 70, 40, 8))
+chips.append(Chip("Input", 0, 0, 0, []))
+chips.append(Chip("Output", 0, 0, 1, []))
+chips.append(Chip("And", 50, 40, 2, []))
+chips.append(Chip("Or", 50, 40, 3, []))
+chips.append(Chip("Not", 30, 10, 4, ["in"]))
+chips.append(Chip("Nand", 60, 40, 5, []))
+chips.append(Chip("Xor", 60, 40, 6, []))
+chips.append(Chip("Nor", 60, 40, 7, []))
+chips.append(Chip("Xnor", 70, 40, 8, []))
 #-----------------------
 
 Tk().withdraw()
@@ -254,13 +255,20 @@ def buildHdl(outputNode): # furthest node in the calculation chain
                 outputNode.parsed = True
                 buildHdl(findNode(connection.fromId, nodes))
                 if chipData != None:
-                    output += chr(ord('a') + connection.inputId) + "=output" + str(connection.fromId) + ","
+                    if (connection.inputId + 1 > len(chipData.inputNames)): # custom input names
+                        output += chr(ord('a') + connection.inputId)
+                    else:
+                        output += chipData.inputNames[connection.inputId]
+                    output += "=output" + str(connection.fromId) + ","
 
         if chipData != None:
             for _input in inputConnections: # check for input connections
                 if _input.toId == outputNode.outputId:
                     node = findNode(_input.fromId, inputNodes)
-                    output += chr(ord('a') + _input.inputId)
+                    if (_input.inputId + 1 > len(chipData.inputNames)): # custom input names
+                        output += chr(ord('a') + _input.inputId)
+                    else:
+                        output += chipData.inputNames[_input.inputId]
                     if node != None and not (node.label == ""):
                         output += "=" + node.label + ","
                     else:
@@ -293,7 +301,6 @@ for node in inputNodes:
 
 for node in outputNodes:
     buildHdl(node)
-    print(node)
 
 for connection in outputConnections:
     print(connection)
