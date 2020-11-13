@@ -1,4 +1,4 @@
-import os
+from os import system
 import xml.etree.ElementTree as ET
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
@@ -305,5 +305,25 @@ for node in outputNodes:
 for connection in outputConnections:
     print(connection)
 
+clear = "\n" * 100
+print(clear) # clear terminal
+
 print("HDL Output:\n")
-print(finalOutput)
+print(finalOutput + "\n")
+
+subNames = input("Substitute connection names? (y/n) ")
+if subNames == "y" or subNames == "yes":
+    print("Enter 'DONE' or nothing to stop")
+    while True:
+        name = input("Enter connection name: ").strip()
+        if (name == "DONE" or name == ''):
+            break
+        newName = input("Enter new name: ").strip()
+        finalOutput = finalOutput.replace(name, newName)
+        print(clear)  # clear terminal
+        print("\nModified HDL Output:\n")
+        print(finalOutput + "\n")
+
+
+
+
